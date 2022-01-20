@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : FileBasedCalculator.cpp
+// Name        : inFileBasedCalculator.cpp
 // Author      : Luke
 // Version     :
 // Copyright   : Your copyright notice
@@ -16,38 +16,38 @@ using namespace std;
 bool caseInsensitiveComparison(string s1, string s2);
 
 
-// Function to read files, calculate, and output result to a file, referencing https://www.cplusplus.com/doc/tutorial/files/
-void readWriteCalcFile() {
+// Function to read inFiles, calculate, and output result to a inFile, referencing https://www.cplusplus.com/doc/tutorial/inFiles/
+void readWriteCalcinFile() {
 
     // Init. and decl. important variables
-    cout << "Now reading file" << endl;
-    string file_name = "input.txt";
+    cout << "Now reading inFile" << endl;
+    string inFile_name = "input.txt";
+    string outFile_name = "output.txt";
     string line;
 
     string oper;
+    string text = "";
     int num1;
     int num2;
     int result;
     
-    // Read from file
-    ifstream file (file_name);
-    if (file.is_open()) {
-        getline(file,line);
+    // Read from inFile
+    ifstream inFile (inFile_name);
+    if (inFile.is_open()) {
+        getline(inFile,line);
         oper = line;
-        getline(file,line);
+        getline(inFile,line);
         num1 = stoi(line);
-        getline(file,line);
+        getline(inFile,line);
         num2 = stoi(line);
 
-        cout << oper << "\n" << num1 << "\n" << num2 << endl;
+        //cout << oper << "\n" << num1 << "\n" << num2 << endl;
+        text.append("The result of ").append(oper).append(" on ").append(to_string(num1)).append(" and ").append(to_string(num2)).append(" is below");
 
-        file.close();
+        inFile.close();
     } else {
-        cout << "Unable to open file - " << file_name << endl;
+        cout << "Unable to open inFile - " << inFile_name << endl;
     }
-
-    // Write to file
-
 
     // Getting operator and finding result
     if(caseInsensitiveComparison("add", oper)){
@@ -62,7 +62,14 @@ void readWriteCalcFile() {
 
     cout << result;
 
-
+    // Write to outFile
+    ofstream outFile (outFile_name);
+    if (outFile.is_open()) {
+        outFile << text << endl << result << endl;
+        outFile.close();
+    } else {
+		cout << "Unable to open output file - " << outFile_name << endl;
+    }
 
 
 }
@@ -85,7 +92,7 @@ bool caseInsensitiveComparison(string s1, string s2) {
 int main() {
 
 
-    readWriteCalcFile();
+    readWriteCalcinFile();
 
 
 
