@@ -1,2 +1,2 @@
-The result of ADD on 5 and 2 is below
-7
+The result of divide on 5 and 0 is below
+0

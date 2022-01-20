@@ -57,10 +57,13 @@ void readWriteCalcinFile() {
     } else if (caseInsensitiveComparison("multiply", oper)) {
         result = num1 * num2;
     } else if (caseInsensitiveComparison("divide", oper)) {
-        result = num1 / num2;
+        if (num2 != 0) {
+            result = num1 / num2;
+        }
+        result = 0;
     }
 
-    cout << result;
+    // cout << result;
 
     // Write to outFile
     ofstream outFile (outFile_name);
