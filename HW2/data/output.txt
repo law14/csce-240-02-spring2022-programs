@@ -1,0 +1,2 @@
+for RECTANGLE and property as AREA:
+RECTANGLE AREA <calculated value>
