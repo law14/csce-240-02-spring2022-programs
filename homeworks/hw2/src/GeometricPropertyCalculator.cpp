@@ -12,8 +12,9 @@
 #include <algorithm>
 
 using namespace std;
-
+string output = "";
 bool caseInsensitiveComparison(string s1, string s2);
+int perimeterOrArea();
 
 // Function to read inFiles, calculate, and output result to an outFile, referening https://www.cplusplus.com/doc/tutorial/inFiles/
 void readCalcFile() {
@@ -40,6 +41,13 @@ void readCalcFile() {
                         if (lineStream >> side2) {
                             string out = "\n" + segment + "\t" + to_string(side1) + "\t" + to_string(side2);
                             cout << out;
+                            int area = side1*side2;
+                            int perimeter = 2*side1 + 2*side2;
+                            if (perimeterOrArea() == 0) {
+                                output += "\nRECTANGLE PERIMETER" + to_string(perimeter);
+                            } else if (perimeterOrArea() == 1) {
+                                output += "\nRECTANGLE AREA" + to_string(area);
+                            }
                         } else {
                             cout << "Not enough information to calculate";
                         }
@@ -51,6 +59,13 @@ void readCalcFile() {
                     if (lineStream >> radius) {
                         string out = "\n" + segment + "\t\t" + to_string(radius);
                         cout << out;
+                        double area = 3.14 * radius * radius;
+                        double perimeter = 3.14 * 2 * radius;
+                        if (perimeterOrArea() == 0) {
+                            output += "\nCIRCLE PERIMETER" + to_string(perimeter);
+                        } else if (perimeterOrArea() == 1) {
+                            output += "\nCIRCLE AREA" + to_string(area);
+                        }
                     } else {
                         cout << "Not enough information to calculate";
                     }
@@ -61,6 +76,13 @@ void readCalcFile() {
                             if (lineStream >> side3) {
                                 string out = "\n" + segment + "\t" + to_string(side1) + "\t" + to_string(side2) + "\t" + to_string(side3);
                                 cout << out;
+                                int perimeter = side1 + side2 + side3;
+                                double area = 0.5;
+                                if (perimeterOrArea() == 0) {
+                                    output += "\nTRIANGLE PERIMETER" + to_string(perimeter);
+                                } else if (perimeterOrArea() == 1) {
+                                    output += "\nTRIANGLE AREA" + to_string(area);
+                                }
                             } else {
                                 cout << "Not enough information to calculate";
                             }
@@ -88,7 +110,7 @@ void readCalcFile() {
 
 // Function to write outFiles
 void writeFile(string input) {
-    string out_file_name = "data/output.txt";
+    string out_file_name = "../data/output.txt";
     ofstream out_file(out_file_name);
     if (out_file.is_open()) {
         out_file << input;
@@ -96,7 +118,21 @@ void writeFile(string input) {
     } else {
         cout << "Unable to open output file - " << out_file_name << endl;
     }
+}
 
+int perimeterOrArea() {
+    char command = 0;
+    cout << "Enter 0 for Perimeter and 1 for area" << endl;
+    cin >> command;
+
+    if (command == '0') {
+        return 0;
+    } else if (command == '1') {
+        return 1;
+    } else {
+        cout << "Invalid command";
+        return 2;
+    }
 
 }
 
@@ -113,10 +149,8 @@ bool caseInsensitiveComparison(string s1, string s2) {
 };
 
 int main() {
-    // readCalcFile();
-    writeFile("this");
-    writeFile("is a");
-    writeFile("1324g     test");
+    readCalcFile();
+    writeFile(output);
 
     return 0;
 }
