@@ -1,0 +1,39 @@
+Enter the district name:
+(Hint: District 13)     
+district 13
+
+Run a command!
+prog2processor –t “Contact Information”
+John R. McCravy, III
+Greenwood
+P.O. Box 50658 Greenwood 29649
+420B Blatt Bldg. Columbia 29201
+(864) 942-8501
+(803) 212-6939
+
+Run a command!
+prog2processor –t “Contact Information:name” 
+        John R. McCravy, III
+
+Run a command!
+prog2processor –t “Contact Information:region” 
+        Greenwood
+
+Run a command!
+prog2processor –t “Contact Information:home address” 
+        P.O. Box 50658 Greenwood 29649
+
+Run a command!
+prog2processor –t “Contact Information:columbia address”
+        420B Blatt Bldg. Columbia 29201
+
+Run a command!
+prog2processor –t “Contact Information:home phone”
+        (864) 942-8501
+
+Run a command!
+prog2processor –t “Contact Information:columbia phone”
+        (803) 212-6939
+
+Run a command!
+quit
