@@ -2,13 +2,16 @@ public class QueryMapper {
     private String[] knownQueries = {
         "quit",
         "tell me about the rep",
-        "Where toes the rep live",
+        "Where does the rep live",
         "how do I contact my rep",
         "what committees is my rep on",
         "tell me everything"
     };
-    private int q;
-    public QueryMapper() {
+    private int queryNumber = -1;
+    private String query = "";
+
+    public QueryMapper(String in){
+        /*
         String[] t1 = {"job", "tom", "bob", "ham", "james", "tim"};
         String[] t2 = {"tim", "jam", "ham", "tom", "bob", "james"};
         double test = wordMatcher(t1, t2);
@@ -16,8 +19,31 @@ public class QueryMapper {
 
         System.out.println("\n\n\n");
         String userUtterance = "what  is my  on";
-        int test2 = determineQuery(userUtterance, knownQueries);
         System.out.println(test2);
+        */
+        int num = determineQuery(in, knownQueries);
+        setQueryNumber(num);
+        setQuery(this.queryNumber);
+    }
+
+    private void setQuery(int n) {
+        if (n==2) {
+            query = "prog2processor -t \"Contact Information:home address\"";
+        } else if (n==3) {
+            query = "prog2processor -t \"Contact Information:columbia phone\"";
+        } else if (n==5) {
+            query = "prog2processor -t \"Contact Information\"";
+        }
+    }
+    public String getQuery() {
+        return this.query;
+    }
+    private void setQueryNumber(int n) {
+        if (n>-1) {
+            queryNumber = n;
+        } else {
+            queryNumber = -1;
+        }
     }
 
     public int determineQuery(String query, String[] queryArray) {
@@ -28,7 +54,7 @@ public class QueryMapper {
         for (int i = 0; i<queryArray.length; i++) {
             String[] possibleQuery = splitStringToWords(queryArray[i]);
             double currentPercentMatch = wordMatcher(userQueryWordArray, possibleQuery);
-            System.out.println(currentPercentMatch);
+            // System.out.println(currentPercentMatch);
             if ((currentPercentMatch > percentMatch) && currentPercentMatch > 0.7) {
                 percentMatch = currentPercentMatch;
                 queryNum = i;

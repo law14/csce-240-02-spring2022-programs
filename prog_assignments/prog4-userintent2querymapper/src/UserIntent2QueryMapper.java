@@ -14,7 +14,10 @@ public class UserIntent2QueryMapper {
         // System.out.println(UserIntent2QueryMapper.getUserUtterance());
         //QueryMapper qm = new QueryMapper();
         Processor a = new Processor();
-        a.run("prog2processor -t \"Contact Information\"");
+        // a.run("prog2processor -t \"Contact Information\"");
+        QueryMapper qMap = new QueryMapper(getUserUtterance());
+        // System.out.println("bro");
+        a.run(qMap.getQuery());
 
 
     }
