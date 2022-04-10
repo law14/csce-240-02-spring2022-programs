@@ -72,7 +72,7 @@ public class LogFileWriter {
     public void log(String log) {
         if (isBuilt()) {
             try {
-                writer.write(log);
+                writer.write(log+"\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }

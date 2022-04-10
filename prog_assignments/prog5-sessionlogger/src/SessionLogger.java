@@ -7,25 +7,29 @@ import java.util.Date;
 /**
  * To use the session logger, first getInstance(), then
  * beginNewSession(), then logUserInput() and logSystemInput()
- * where necessary, then endSession().
+ * where necessary, then endSession(). This creates a new file
+ * for each chat session, and 
  */
 public class SessionLogger {
     private static SessionLogger sessionLogger = new SessionLogger();
-    private static PrintStream console = System.out;
     private static final String FILE_PATH = "data/chat_sessions/";
     private static final String PATTERN_FORMAT = "HH.mm.ss-uuuu.MM.dd";
     private static final String PROGRAM_NAME = "prog5-sessionlogger";
+    private LogFileWriter logFileWriter;
 
+    // Data for total of all sessions
     private int totalCount = 0;
-    private long totalDuration;
+    private long totalDuration = 0;
 
-    private ChatSession chatSession;
-    private Instant startInstant;
-    private Instant endInstant;
+    // Instance necessary for each chat instance
+    private File currentFile;
     private String fileDate;
     private long currentDuration;
-    private File currentFile;
-    private LogFileWriter logFileWriter;
+    //private ChatSession chatSession;
+
+    // Used to calculate the duration of each session
+    private Instant startInstant;
+    private Instant endInstant;
 
     /**
      * Private SessionLogger constructor
@@ -43,31 +47,20 @@ public class SessionLogger {
         return sessionLogger;
     }
 
-
-
-
     // Begenning Of Session Methods
     /**
      * Use to setup and start a new session
      */
     public void beginNewSession() {
-        setStartTime(Instant.now());
+        setStartInstant(Instant.now());
         setFileDate();
-        String fileName = "chat".concat(String.valueOf(this.totalCount)+"_"+this.fileDate);
+        String fileName = "chat".concat(String.valueOf(this.totalCount+1)+"_"+this.fileDate);
         //System.out.println(FILE_PATH+fileName);
         setCurrentFile(fileName);
         //System.out.println(getCurrentFile());
-
         buildLogFileWriter();
         
     }
-
-    private void buildLogFileWriter() {
-        logFileWriter = LogFileWriter.getInstance();
-        logFileWriter.build(this.currentFile);
-    }
-
-
 
     /**
      * Use to log user input via the LogFileWriter
@@ -78,33 +71,51 @@ public class SessionLogger {
     }
 
     /**
-     * Use to log system input via the LogFileWriter
+     * Use to speak to the console whilist logging
+     * system input via the LogFileWriter
      * @param s String to be logged
      */
     public void logSystemOutput(String s) {
-        System.out.println(PROGRAM_NAME+s);
-        logFileWriter.log(PROGRAM_NAME+s);
+        System.out.println(PROGRAM_NAME+": "+s);
+        logFileWriter.log(PROGRAM_NAME+": "+s);
     }
-
 
     /**
      * Use endSession() to end a session
      */
-    private void endSession(){
-        setEndTime(Instant.now());
+    public void endSession(){
+        // create update methods that use set methods to change data based on parameters
+        logFileWriter.end();
+        setEndInstant(Instant.now());
         setCurrentDuration();
+
         updateTotalCount();
+        updateTotalDuration();
+
+        // update CSV file method
+
+
 
         // write file end
 
     }
 
+    
+    /**
+     * Increases the {@code totalCount} of sessions
+     */
+    private void updateTotalCount() {
+        this.totalCount = totalCount++;
+    }
+
+    /**
+     * Adjusts the {@code totalDuration}. Only call after setting current
+     */
+    private void updateTotalDuration() {
+        this.totalDuration += this.currentDuration;
+    }
 
 
-
-
-
-    // TODO: Setters
     /**
      * Creates a new file {@code fileName} in the {@code FILE_PATH} with the
      * @param fileName desired name of the new file
@@ -136,9 +147,9 @@ public class SessionLogger {
      * Sets the {@code startTime}
      * @param startTime the desired {@code startTime}
      */
-    private void setStartTime(Instant startTime) {
-        if (startTime != null) {
-            this.startInstant = startTime;
+    private void setStartInstant(Instant startInstant) {
+        if (startInstant != null) {
+            this.startInstant = startInstant;
         }
     }
 
@@ -146,9 +157,9 @@ public class SessionLogger {
      * Sets the {@code endTime}
      * @param endTime the desired {@code endTime}
      */
-    private void setEndTime(Instant endTime) {
-        if (endTime != null) {
-            this.endInstant = endTime;
+    private void setEndInstant(Instant endInstant) {
+        if (endInstant != null) {
+            this.endInstant = endInstant;
         }
     }
 
@@ -163,7 +174,7 @@ public class SessionLogger {
     }
 
     /**
-     * TODO:
+     * 
      */
     private void setCurrentDuration() {
         if (this.startInstant != null && this.endInstant != null) {
@@ -171,16 +182,6 @@ public class SessionLogger {
         }
     }
 
-
-
-    // TODO: other methods
-
-    /**
-     * Increases the {@code totalCount} of sessions
-     */
-    private void updateTotalCount() {
-        totalCount++;
-    }
 
     /**
      * Get a string representation of the {@code currentFile}
@@ -191,15 +192,16 @@ public class SessionLogger {
     }
 
     /**
-     * Update the totalDuration, only call after setting current
+     * Gets the single {@code logFileWriter} instance and builds it 
      */
-    private void updateTotalDuration() {
-        this.totalDuration += this.currentDuration;
+    private void buildLogFileWriter() {
+        logFileWriter = LogFileWriter.getInstance();
+        logFileWriter.build(this.currentFile);
     }
 
     /**
      * Creates a formatted String from an instant
-     * @param instant
+     * @param instant to be formatted
      * @return a formatted String representation of the instant
      */
     private String myFormattedDate(Instant instant) {
