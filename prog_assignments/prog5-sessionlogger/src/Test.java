@@ -22,12 +22,17 @@ public class Test {
         // log.log("ano");
         // log.end();
 
-        SessionLogger sessionLogger = SessionLogger.getInstance();
-        sessionLogger.beginNewSession();
-        Scanner s = new Scanner(System.in);
-        String line = s.nextLine();
-        sessionLogger.logUserInput(line);
-        sessionLogger.logSystemOutput("system response");
-        sessionLogger.endSession();
+        // SessionLogger sessionLogger = SessionLogger.getInstance();
+        // sessionLogger.beginNewSession();
+        // Scanner s = new Scanner(System.in);
+        // String line = s.nextLine();
+        // sessionLogger.logUserInput(line);
+        // sessionLogger.logSystemOutput("system response");
+        // sessionLogger.endSession();
+
+        CSVFileWriter csvfa = CSVFileWriter.getInstance();
+        csvfa.build("csvfa");
+        System.out.println(csvfa.isBuilt());
+
     }
 }

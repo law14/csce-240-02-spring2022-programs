@@ -3,7 +3,7 @@ import java.io.*;
 public class SessionFileReader {
     private SessionFileReader sessionFileReader = new SessionFileReader();
 
-    
+
     private void readFromFile(String fileName) {
         try {
             //BufferedReader buffReader = new BufferedReader(new InputStreamReader(System.in));

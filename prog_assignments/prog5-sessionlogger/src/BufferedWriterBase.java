@@ -1,36 +1,12 @@
 import java.io.*;
-
-/**
- * The LogFileWriter class follows the singleton design pattern.
- * To use first "build()" then "log()" then "end()"
- * @author Luke
- */
-public class LogFileWriter {
-    private static LogFileWriter logFileWriter = new LogFileWriter();
-    private BufferedWriter writer;
+public abstract class BufferedWriterBase {
+    BufferedWriter writer;
     private File outputFile;
     private boolean built = false;
 
+    
     /**
-     * Private LogFileWriter constructor
-     */
-    private LogFileWriter() {}
-
-
-    /**
-     * Use to get the single LogFileWriter instance
-     * @return the single LogFileWriter instance
-     */
-    public static LogFileWriter getInstance() {
-        if (logFileWriter == null) {
-            logFileWriter = new LogFileWriter();
-        }
-        return logFileWriter;
-    }
-
-
-    /**
-     * builds the LogFileWriter with a {@code fileName}
+     * builds the {@code BufferedWriter} with a {@code fileName}
      * @param fileName name of the file to be written to
      */
     public void build(String fileName) {
@@ -48,7 +24,7 @@ public class LogFileWriter {
     }
 
     /**
-     * builds the LogFileWriter with a {@code file}
+     * builds the {@code BufferedWriter} with a {@code file}
      * @param file the file to be written to
      */
     public void build(File file) {
@@ -66,13 +42,13 @@ public class LogFileWriter {
     }
 
     /**
-     * Adds to the outputStream so long as "build()" method was
-     * previously called successfully.
+     * Adds a line to the outputStream so long as "build()" 
+     * method was previously called successfully.
      */
-    public void log(String log) {
+    public void write(String line) {
         if (isBuilt()) {
             try {
-                writer.write(log+"\n");
+                writer.write(line+"\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -82,7 +58,27 @@ public class LogFileWriter {
     }
 
     /**
-     * Ends the log, closing the BufferedWriter
+     * Sets the output file for the {@code BufferedWriter} with a fileName
+     * @param fileName the desired output file's name
+     */
+    public void setOutputFile(String fileName) {
+        if (fileName != null) {
+            this.outputFile = new File(fileName);
+        }
+    }
+
+    /**
+     * Sets the output file for the {@code BufferedWriter} with a file
+     * @param file
+     */
+    public void setOutputFile(File file) {
+        if (file != null) {
+            this.outputFile = file;
+        }
+    }
+    
+    /**
+     * Ends the writing, closing the {@code BufferedWriter}
      */
     public void end() {
         try {
@@ -92,37 +88,13 @@ public class LogFileWriter {
             e.printStackTrace();
         }
     }
-    
-    /**
-     * Sets the output file
-     * @param fileName the desired output file's name
-     */
-    public void setOutputFile(String fileName) {
-        if (fileName != null) {
-            this.outputFile = new File(fileName);
-        }
-    }
-    public void setOutputFile(File file) {
-        if (file != null) {
-            this.outputFile = file;
-        }
-    }
 
     /**
-     * Gets the output file
-     * @return the output file
-     */
-    private File getOutputFile() {
-        return this.outputFile;
-    }
-
-    /**
+     * Returns if the {@code BufferedWriter} has been built
      * @return built variable
      */
     public boolean isBuilt() {
         return this.built;
     }
-
-
 
 }
