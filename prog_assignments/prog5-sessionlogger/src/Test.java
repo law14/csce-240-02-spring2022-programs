@@ -3,7 +3,13 @@ import java.util.Scanner;
 
 
 public class Test {
+    // CSVFileWriter csvFileWriter = CSVFileWriter.getInstance();
+    // String newEntry = csvFileWriter.makeChatSessionLine(1, 3, 4, 1234);
+    // String newTotal = csvFileWriter.makeChatSessionLine(1, 3, 4, 1234);
+    // csvFileWriter.writeToCSVFile(csvFileWriter.updateCSVFile("data/chat_statistics.csv", newTotal, newEntry));
+
     public static void main(String[] args) {
+
         // LogFileWriter log = LogFileWriter.getInstance();
         // System.out.println(log);
 
@@ -22,17 +28,31 @@ public class Test {
         // log.log("ano");
         // log.end();
 
-        // SessionLogger sessionLogger = SessionLogger.getInstance();
-        // sessionLogger.beginNewSession();
-        // Scanner s = new Scanner(System.in);
-        // String line = s.nextLine();
-        // sessionLogger.logUserInput(line);
-        // sessionLogger.logSystemOutput("system response");
-        // sessionLogger.endSession();
+        SessionLogger sessionLogger = SessionLogger.getInstance();
+        sessionLogger.beginNewSession();
+        Scanner s = new Scanner(System.in);
+        String line = s.nextLine();
+        sessionLogger.logUserInput(line);
+        sessionLogger.logSystemOutput("system response");
+        sessionLogger.endSession();
 
-        CSVFileWriter csvfa = CSVFileWriter.getInstance();
-        csvfa.build("csvfa");
-        System.out.println(csvfa.isBuilt());
+        // CSVFileWriter csvfa = CSVFileWriter.getInstance();
+        // csvfa.build("csvfa",false);
+        // System.out.println(csvfa.isBuilt());
+        // csvfa.writeChatSessionToFile(5, 6, 7, 4234);
+        // csvfa.end();
+
+        // SessionFileReader sfr = SessionFileReader.getInstance();
+        // System.out.println(sfr.getSession(0, "data/chat_statistics.csv"));
+
+        // CSVFileWriter csvFileWriter = CSVFileWriter.getInstance();
+        // String newEntry = csvFileWriter.makeChatSessionLine(1, 3, 4, 1234);
+        // String newTotal = csvFileWriter.makeChatSessionLine(1, 3, 4, 1234);
+        // csvFileWriter.writeToCSVFile(csvFileWriter.updateCSVFile("data/chat_statistics.csv", newTotal, newEntry));
+    
+
+        
+
 
     }
 }

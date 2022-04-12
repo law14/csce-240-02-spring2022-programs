@@ -13,18 +13,25 @@ import java.util.Date;
 public class SessionLogger {
     private static SessionLogger sessionLogger = new SessionLogger();
     private static final String FILE_PATH = "data/chat_sessions/";
-    private static final String PATTERN_FORMAT = "HH.mm.ss-uuuu.MM.dd";
+    private static final String PATTERN_FORMAT = "MM.dd.uuuu-HH.mm.ss";
     private static final String PROGRAM_NAME = "prog5-sessionlogger";
     private LogFileWriter logFileWriter;
+    private CSVFileWriter csvFileWriter;
 
     // Data for total of all sessions
     private int totalCount = 0;
     private long totalDuration = 0;
+    private int totalUsrUtt = 0;
+    private int totalSysUtt = 0;
 
     // Instance necessary for each chat instance
     private File currentFile;
+    private String csvFileName = "data/chat_statistics.csv";
     private String fileDate;
     private long currentDuration;
+    private int usrUtt = 0;
+    private int sysUtt = 0;
+
     //private ChatSession chatSession;
 
     // Used to calculate the duration of each session
@@ -67,7 +74,8 @@ public class SessionLogger {
      * @param s String to be logged
      */
     public void logUserInput(String s) {
-        logFileWriter.log(s);
+        logFileWriter.write(s+"\n");
+        usrUtt++;
     }
 
     /**
@@ -77,7 +85,8 @@ public class SessionLogger {
      */
     public void logSystemOutput(String s) {
         System.out.println(PROGRAM_NAME+": "+s);
-        logFileWriter.log(PROGRAM_NAME+": "+s);
+        logFileWriter.write(PROGRAM_NAME+": "+s+"\n");
+        sysUtt++;
     }
 
     /**
@@ -90,22 +99,27 @@ public class SessionLogger {
         setCurrentDuration();
 
         updateTotalCount();
+        totalUsrUtt = totalUsrUtt+usrUtt;
+        totalSysUtt = totalSysUtt+sysUtt;
         updateTotalDuration();
 
         // update CSV file method
-
-
+        csvFileWriter = CSVFileWriter.getInstance();
+        String newEntry = csvFileWriter.makeChatSessionLine(totalCount, usrUtt, sysUtt, currentDuration);
+        String newTotal = csvFileWriter.makeChatSessionLine(totalCount, totalUsrUtt, totalSysUtt, totalDuration);
+        csvFileWriter.writeToCSVFile(csvFileWriter.updateCSVFile(csvFileName, newTotal, newEntry));
 
         // write file end
 
     }
+
 
     
     /**
      * Increases the {@code totalCount} of sessions
      */
     private void updateTotalCount() {
-        this.totalCount = totalCount++;
+        this.totalCount++;
     }
 
     /**
@@ -178,7 +192,7 @@ public class SessionLogger {
      */
     private void setCurrentDuration() {
         if (this.startInstant != null && this.endInstant != null) {
-            this.currentDuration = Duration.between(this.startInstant, this.endInstant).toMillis();
+            this.currentDuration = Duration.between(this.startInstant, this.endInstant).toMillis() / 1000;
         }
     }
 
@@ -196,7 +210,7 @@ public class SessionLogger {
      */
     private void buildLogFileWriter() {
         logFileWriter = LogFileWriter.getInstance();
-        logFileWriter.build(this.currentFile);
+        logFileWriter.build(this.currentFile,false);
     }
 
     /**

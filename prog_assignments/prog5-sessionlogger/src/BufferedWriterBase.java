@@ -1,6 +1,13 @@
 import java.io.*;
+
+/**
+ * The BufferedWriterBase is an abstract class to enable the ability
+ * to write to a file with ease.
+ * To use first "build()" then "writeToFile()" then "end()"
+ * @author Luke
+ */
 public abstract class BufferedWriterBase {
-    BufferedWriter writer;
+    PrintWriter writer;
     private File outputFile;
     private boolean built = false;
 
@@ -9,17 +16,17 @@ public abstract class BufferedWriterBase {
      * builds the {@code BufferedWriter} with a {@code fileName}
      * @param fileName name of the file to be written to
      */
-    public void build(String fileName) {
+    public void build(String fileName, boolean append) {
         if (!isBuilt()) {
             setOutputFile(fileName);
             try {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile)));
+                writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile,append))));
                 this.built = true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("already built");
+            System.out.println("BufferedWriter already built");
         }
     }
 
@@ -27,17 +34,17 @@ public abstract class BufferedWriterBase {
      * builds the {@code BufferedWriter} with a {@code file}
      * @param file the file to be written to
      */
-    public void build(File file) {
+    public void build(File file, boolean append) {
         if (!isBuilt()) {
             setOutputFile(file);
             try {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile)));
+                writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile,append))));
                 this.built = true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("already built");
+            System.out.println("BufferedWriter already built");
         }
     }
 
@@ -48,12 +55,12 @@ public abstract class BufferedWriterBase {
     public void write(String line) {
         if (isBuilt()) {
             try {
-                writer.write(line+"\n");
+                writer.print(line);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Please use the \"build()\" method before attempting to log");
+            System.out.println("Please use the \"build()\" method before attempting to write");
         }
     }
 
@@ -96,5 +103,14 @@ public abstract class BufferedWriterBase {
     public boolean isBuilt() {
         return this.built;
     }
+
+    /**
+     * Gets the output file
+     * @return the output file
+     */
+    private File getOutputFile() {
+        return this.outputFile;
+    }
+
 
 }
