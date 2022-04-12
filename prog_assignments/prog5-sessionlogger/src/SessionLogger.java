@@ -2,6 +2,7 @@ import java.io.*;
 import java.time.*;
 import java.time.format.*;
 import java.util.Date;
+import java.util.Scanner;
 
 
 /**
@@ -244,6 +245,14 @@ public class SessionLogger {
 
         sesh.beginNewSession();
         sesh.endSession();
+
+        SessionLogger sessionLogger = SessionLogger.getInstance();
+        sessionLogger.beginNewSession();
+        Scanner s = new Scanner(System.in);
+        String line = s.nextLine();
+        sessionLogger.logUserInput(line);
+        sessionLogger.logSystemOutput("system response");
+        sessionLogger.endSession();
         
         //sesh.beginNewSession();
 
