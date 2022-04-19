@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 /**
  * To use the session logger, first getInstance(), then
- * beginNewSession(), then logUserInput() and logSystemInput()
+ * beginNewSession(), then logUserInput() and logSystemOutput()
  * where necessary, then endSession(). This creates a new file
  * for each chat session, and 
  */
@@ -15,7 +15,7 @@ public class SessionLogger {
     private static SessionLogger sessionLogger = new SessionLogger();
     private static final String FILE_PATH = "data/chat_sessions/";
     private static final String PATTERN_FORMAT = "MM.dd.uuuu-HH.mm.ss";
-    private static final String PROGRAM_NAME = "prog5-sessionlogger";
+    private static final String PROGRAM_NAME = "JohnRMcCravyIII-chatbot";
     private LogFileWriter logFileWriter;
     private CSVFileWriter csvFileWriter;
 
